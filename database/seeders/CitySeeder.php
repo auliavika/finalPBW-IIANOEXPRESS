@@ -9,7 +9,21 @@ class CitySeeder extends Seeder
 {
     public function run()
     {
-        $cities = ['Banda Aceh', 'Langsa', 'Lhokseumawe', 'Sabang', 'Subulussalam'];
+        $cities = [
+            'Banda Aceh',
+            'Langsa',
+            'Lhokseumawe',
+            'Pidie',
+            'Aceh Tengah',
+            'Aceh Selatan',
+            'Aceh Barat',
+            'Aceh Barat Daya',
+            'Aceh Singkil',
+            'Bireuen',
+            'Nagan Raya',
+            'Aceh Tamiang',
+            'Bener Meriah',
+        ];
 
         foreach ($cities as $city) {
             City::create(['name' => $city]);
