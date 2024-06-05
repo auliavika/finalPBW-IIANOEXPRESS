@@ -51,7 +51,7 @@ class BookingController extends Controller
 
         $schedule->decrement('seat_capacity', $request->seat);
 
-        return redirect()->route('tickets.index')->with(' Tiket berhasil dipesan !');
+        return view('user.booking.thankyou');
     }
 
     public function destroy(Ticket $ticket)
