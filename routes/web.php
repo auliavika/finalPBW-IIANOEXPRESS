@@ -8,6 +8,7 @@ use App\Http\Controllers\TicketController;
 use App\Models\City;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\AboutController;
 
 
 Route::get('/', function () {
@@ -41,6 +42,8 @@ Route::middleware(['auth', 'user-access:user'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');
+
+    Route::get('/about', [AboutController::class, 'index'])->name('about.index');
 }); 
   
 /*------------------------------------------
