@@ -119,12 +119,12 @@
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('profile.show') }}">Profil</a>
                                 </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('about.index') }}">Tentang Kami</a>
+                                </li>
                             @endif
                         @endauth
 
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('about.index') }}">Tentang Kami</a>
-                        </li>
                     </ul>
 
                     <ul class="navbar-nav ms-auto">
