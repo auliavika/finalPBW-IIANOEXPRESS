@@ -5,7 +5,11 @@
     <h2 class="mb-4 text-center"><i class="bi bi-ticket"></i> Tiket Saya</h2>
     <p class="mb-4 text-center">Catatan: Pembayaran dilakukan secara langsung</p>
     @if($tickets->isEmpty())
-        <div class="alert alert-warning">Anda belum memesan tiket.</div>
+       <div class="alert alert-warning text-center">
+    Anda belum memesan tiket. 
+    <br>
+    <a href="{{ route('tickets.history') }}" class="link-primary mt-3">Lihat Riwayat Pemesanan</a>
+</div>
     @else
         @foreach($tickets as $ticket)
         <div class="card mb-4 col-md-8 mx-auto" style="border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); background-color: #E4E5DB; position: relative;">

@@ -4,7 +4,11 @@
 <div class="container mt-5">
     <h2 class="mb-4 text-center"><i class="bi bi-clock-history"></i> Riwayat Pemesanan</h2>
     @if($tickets->isEmpty())
-        <div class="alert alert-warning text-center">Anda belum memiliki riwayat pemesanan.</div>
+    <div class="alert alert-warning text-center">
+        Anda belum memiliki riwayat pemesanan. 
+        <br>
+        <a href="{{ route('home') }}" class="link-primary mt-3">Kembali ke Beranda</a>
+    </div>
     @else
         @foreach($tickets as $ticket)
         <div class="card mb-4 col-md-8 mx-auto" style="border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); background-color: #E4E5DB; position: relative;">
