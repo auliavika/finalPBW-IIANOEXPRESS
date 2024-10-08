@@ -16,12 +16,12 @@
 
   <style>
     body {
-      background: linear-gradient(to right, #9D9D9A, #C4C4C4); /* Gradient background */
-      margin: 0; /* Reset default margin */
-      padding: 0; /* Reset default padding */
+      background: linear-gradient(to right, #9D9D9A, #C4C4C4);
+      margin: 0;
+      padding: 0;
     }
 
-    .navbar { /* Tetap mempertahankan style navbar sebelumnya */
+    .navbar {
       background-image: linear-gradient(to right, #5A9177, #2F5241);
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
       transition: background-color 0.3s ease-in-out;
@@ -34,8 +34,6 @@
     .navbar .navbar-brand {
       font-weight: bold;
       color: #fff;
-     
-     
       transition: color 0.3s ease-in-out;
     }
 
@@ -46,33 +44,22 @@
     .navbar-nav .nav-link {
       color: #fff;
       transition: color 0.3s ease-in-out;
-      margin-left: 35px; /* Jarak antar tombol */
+      margin-left: 100px;
       padding: 8px 16px;
-      border-radius: 4px; /* Membuat tombol sedikit melengkung */
+      border-radius: 4px;
       white-space: nowrap;
     }
 
     .navbar-nav .nav-link:hover {
       color: #000;
-      background-color: rgba(255, 255, 255, 0.2); /* Mengubah warna latar belakang saat dihover */
+      background-color: rgba(255, 255, 255, 0.2);
     }
 
-   .navbar-nav {
-    display: flex;
-    justify-content: flex-end; /* Mengatur jarak antara elemen di kiri dan kanan */
-    width: 100%;
+    .navbar-nav {
+      display: flex;
+      justify-content: flex-end;
+      width: 100%;
     }
-
-    .navbar-nav.me-auto {
-  margin-left: 450px; /* Menggeser elemen ke kanan sejauh mungkin */
-  padding-left: 1rem; /* Menambahkan padding di sisi kiri */
-}
-
-.navbar-nav.ms-auto{
-    margin-left: 25px; /* Menggeser elemen ke kanan sejauh mungkin */
-  padding-left: 1rem;
-}
-
 
     .dropdown-menu {
       background-color: #fff;
@@ -96,18 +83,17 @@
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
-            <a class="navbar-brand" href="{{ Auth::check() && Auth::user()->type == 'admin' ? route('admin.home') : route('home') }}">
-                <img src="{{ asset('storage/image/logo.png') }}" alt="IIANO EXPRESS" style="height: 30px;">
-            </a>
+                <a class="navbar-brand" href="{{ Auth::check() && Auth::user()->type == 'admin' ? route('admin.home') : route('home') }}">
+                    <img src="{{ asset('storage/image/logo.png') }}" alt="IIANO EXPRESS" style="height: 30px;">
+                </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav me-auto">
+                    <ul class="navbar-nav ms-auto"> <!-- Tambahkan ms-auto untuk menggeser ke kanan -->
                         @auth
                             @if (Auth::user()->type == 'admin')
-                                <!-- Admin Links -->
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('admin.home') }}">Beranda Admin</a>
                                 </li>
@@ -121,7 +107,6 @@
                                     <a class="nav-link" href="{{ route('admin.buses.index') }}">Kelola Bus</a>
                                 </li>
                             @else
-                                <!-- User Links -->
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('home') }}">Beranda</a>
                                 </li>
@@ -134,12 +119,15 @@
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('profile.show') }}">Profil</a>
                                 </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('about.index') }}">Tentang Kami</a>
+                                </li>
                             @endif
                         @endauth
+
                     </ul>
 
                     <ul class="navbar-nav ms-auto">
-                        <!-- Authentication Links -->
                         @guest
                             @if (Route::has('login'))
                                 <li class="nav-item">
@@ -160,8 +148,8 @@
 
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
+                                    onclick="event.preventDefault();
+                                                    document.getElementById('logout-form').submit();">
                                         {{ __('Logout') }}
                                     </a>
 
