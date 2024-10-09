@@ -1,7 +1,7 @@
 # Gunakan image PHP dengan FPM
 FROM php:8.2-fpm
 
-# Install dependencies
+# Install dependencies OS
 RUN apt-get update && apt-get install -y \
     build-essential \
     libpng-dev \
@@ -13,10 +13,14 @@ RUN apt-get update && apt-get install -y \
     vim \
     unzip \
     git \
-    curl
+    curl \
+    libonig-dev \
+    libxml2-dev \
+    libzip-dev
 
-# Install extensions PHP
-RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
+# Install ekstensi PHP
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip
 
 # Set working directory
 WORKDIR /var/www
