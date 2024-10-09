@@ -1,36 +1,43 @@
-# 1. Gunakan image PHP dengan versi yang tepat
-FROM php:8.1-fpm
+# Gunakan image PHP dengan FPM
+FROM php:8.2-fpm
 
-# 2. Install dependencies yang diperlukan untuk Laravel
+# Install dependencies
 RUN apt-get update && apt-get install -y \
+    build-essential \
     libpng-dev \
-    libjpeg-dev \
+    libjpeg62-turbo-dev \
     libfreetype6-dev \
-    libzip-dev \
+    locales \
     zip \
+    jpegoptim optipng pngquant gifsicle \
+    vim \
     unzip \
     git \
-    curl \
-    && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install pdo pdo_mysql gd zip
+    curl
 
-# 3. Install Composer untuk mengelola dependensi PHP
+# Install extensions PHP
+RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
+
+# Set working directory
+WORKDIR /var/www
+
+# Copy composer.lock and composer.json
+COPY composer.lock composer.json /var/www/
+
+# Install composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# 4. Set working directory untuk Laravel
-WORKDIR /var/www/html
+# Install dependencies via composer
+RUN composer install --no-dev --no-scripts --no-autoloader
 
-# 5. Copy semua file proyek Laravel ke dalam container
-COPY . .
+# Copy the rest of the application code
+COPY . /var/www
 
-# 6. Install semua dependensi Laravel
-RUN composer install --no-dev --no-scripts --no-interaction
+# Ganti izin folder
+RUN chown -R www-data:www-data /var/www
 
-# 7. Set permission agar Laravel bisa menulis di folder storage dan cache
-RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
-
-# 8. Expose port 9000 untuk mengakses PHP-FPM
+# Expose port 9000
 EXPOSE 9000
 
-# 9. Jalankan PHP-FPM saat container dijalankan
-CMD ["php-fpm"]
+# Jalankan PHP-FPM
+CMD ["php-fpm"]
