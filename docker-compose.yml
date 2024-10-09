@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: auliavr/prak5:latest
+    container_name: laravel_app
+    ports:
+      - "9000:9000"
+    depends_on:
+      - mysql
+    environment:
+      DB_CONNECTION: mysql
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_DATABASE: iianoexpress
+      DB_USERNAME: root
+      DB_PASSWORD: ''
+    volumes:
+      - .:/var/www/html
+
+  mysql:
+    image: mysql:5.7
+    container_name: mysql_db
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: iianoexpress
+      MYSQL_ROOT_PASSWORD: ''
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+volumes:
+  mysql_data:
