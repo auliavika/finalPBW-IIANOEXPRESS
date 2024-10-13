@@ -1,47 +1,49 @@
-# Gunakan image PHP dengan FPM
+# Dockerfile
+
+# Menggunakan image PHP resmi
 FROM php:8.2-fpm
 
-# Install dependencies OS
+# Install dependencies yang diperlukan untuk Laravel
 RUN apt-get update && apt-get install -y \
-    build-essential \
     libpng-dev \
-    libjpeg62-turbo-dev \
+    libjpeg-dev \
     libfreetype6-dev \
-    locales \
+    libzip-dev \
     zip \
-    jpegoptim optipng pngquant gifsicle \
-    vim \
     unzip \
     git \
     curl \
-    libonig-dev \
-    libxml2-dev \
-    libzip-dev
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install pdo pdo_mysql gd zip \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Install ekstensi PHP
-RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip
+# Tambahkan pengguna dan grup www-data
+RUN usermod -u 1000 www-data && groupmod -g 1000 www-data || \
+    { groupadd -g 1000 www-data; useradd -u 1000 -g www-data -m -s /bin/bash www-data; }
 
-# Set working directory
-WORKDIR /var/www
-
-# Copy composer.lock and composer.json
-COPY composer.lock composer.json /var/www/
-
-# Install composer
+# Install Composer untuk mengelola dependensi PHP
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Install dependencies via composer
-RUN composer install --no-dev --no-scripts --no-autoloader
+# Set working directory untuk Laravel
+WORKDIR /var/www/html
 
-# Copy the rest of the application code
-COPY . /var/www
+# Copy semua file proyek Laravel ke dalam container
+COPY . .
 
-# Ganti izin folder
-RUN chown -R www-data:www-data /var/www
+# Izinkan Composer berjalan sebagai root
+ENV COMPOSER_ALLOW_SUPERUSER=1
 
-# Expose port 9000
+# Hapus vendor jika ada package sisa
+RUN rm -rf vendor/*
+
+# Install semua dependensi Laravel
+RUN composer install --no-dev --no-scripts --no-interaction
+
+# Set permission agar Laravel bisa menulis di folder storage dan cache
+RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+
+# Expose port 9000 untuk mengakses PHP-FPM
 EXPOSE 9000
 
-# Jalankan PHP-FPM
+# Jalankan PHP-FPM saat container dijalankan
 CMD ["php-fpm"]

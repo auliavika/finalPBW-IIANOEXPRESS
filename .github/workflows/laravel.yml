@@ -33,7 +33,7 @@ jobs:
         DB_CONNECTION: mysql
         DB_DATABASE: iianoexpress
         DB_USERNAME: root
-        DB_PASSWORD: ''  # Kosongkan password
+        DB_PASSWORD: 'secret'  # Sesuaikan password dengan docker-compose
         DB_HOST: mysql  # Menggunakan nama service dari docker-compose
         DB_PORT: 3306
       run: php artisan test
@@ -42,8 +42,12 @@ jobs:
       with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
-    - name: Build and push
+    - name: Build and push Docker Image
       uses: docker/build-push-action@v6
       with:
         push: true
         tags: auliavr/prak5:latest
+    - name: Run Database Migrations
+      run: |
+        docker-compose up -d mysql  # Pastikan mysql berjalan
+        docker exec php php artisan migrate
