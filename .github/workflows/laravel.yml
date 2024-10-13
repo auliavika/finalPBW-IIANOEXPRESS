@@ -47,7 +47,4 @@ jobs:
       with:
         push: true
         tags: auliavr/prak5:latest
-    - name: Run Database Migrations
-      run: |
-        docker-compose up -d mysql  # Pastikan mysql berjalan
-        docker exec php php artisan migrate
+  
