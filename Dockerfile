@@ -43,7 +43,7 @@ RUN composer install --no-dev --no-scripts --no-interaction
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
 # Expose port 9000 untuk mengakses PHP-FPM
-EXPOSE 9000
-ENV PORT 8080
+EXPOSE 8080
+# ENV PORT 8080
 # Jalankan PHP-FPM saat container dijalankan
 CMD ["php-fpm"]
